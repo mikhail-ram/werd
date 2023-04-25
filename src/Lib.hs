@@ -1,10 +1,6 @@
 module Lib
-    ( someFunc
-    , preprocess
-    , removePunctuation
-    , ngram
-    , getMap
-    , getOccurences
+    ( getMostProbable
+    , t
     ) where
 
 import qualified Data.Text as T
@@ -12,17 +8,15 @@ import qualified Data.Map as M
 import qualified Data.List as L
 import Data.Ord (comparing, Down(..))
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
-
 t = T.pack "Here is some sample text, this sample text has punctuation!!"
 
-getOccurences :: T.Text -> [(T.Text, Int)]
-getOccurences key = case M.lookup key mapped of
-                      Just grams -> L.sortBy (comparing (Down . snd)) (M.toList occurencesMap)
-                        where occurencesMap = M.fromListWith (+) [(word, 1) | word <- grams]
-                      Nothing -> [(T.empty,0)]
-  where mapped = getMap 3 (preprocess t)
+
+getMostProbable :: T.Text -> T.Text -> [(T.Text, Int)]
+getMostProbable key text = case M.lookup key mapped of
+                         Just grams -> L.sortBy (comparing (Down . snd)) (M.toList occurencesMap)
+                           where occurencesMap = M.fromListWith (+) [(word, 1) | word <- grams]
+                         Nothing -> [(T.empty,0)]
+  where mapped = getMap 3 (preprocess text)
 
 preprocess :: T.Text -> [T.Text]
 preprocess text = T.words . T.toLower . removePunctuation $ text
