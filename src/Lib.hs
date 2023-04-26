@@ -18,7 +18,7 @@ getMostProbable key text = case M.lookup key mapped of
                          Just grams -> L.sortBy (comparing (Down . snd)) (M.toList occurencesMap)
                            where occurencesMap = M.fromListWith (+) [(word, 1) | word <- grams]
                          Nothing -> [(T.empty,0)]
-  where mapped = getMap 2 (preprocess text)
+  where mapped = getMap 1 (preprocess text)
 
 preprocess :: T.Text -> [T.Text]
 preprocess text = T.words . T.toLower . removePunctuation $ text
