@@ -9,15 +9,16 @@ import Control.Applicative
 import qualified Data.ByteString.Lazy as BL
 import Data.Csv
 import qualified Data.Vector as V
+import qualified Data.Text as T
 
 data Person = Person
-  { id :: !Int
+  { id     :: !Int
   , gender :: !String
-  , age :: !Int
-  , topic :: !Int
-  , sign :: !String
-  , date :: !String
-  , text :: !String
+  , age    :: !Int
+  , topic  :: !String
+  , sign   :: !String
+  , date   :: !String
+  , text   :: !String
 }
 
 instance FromNamedRecord Person where
@@ -35,4 +36,4 @@ main = do
   case decodeByName csvData of
     Left err -> putStrLn err
     Right (_, v) -> V.forM_ v $ \ p ->
-      putStrLn $ "Date: " ++ date p ++ "\n" ++ text p
+      putStrLn $ text p
